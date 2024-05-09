@@ -1,6 +1,7 @@
 # Usar una imagen base oficial de PHP con Apache
 FROM php:8.0-apache
 
+
 # Instalar git y unzip para el manejo de dependencias con Composer, además de librerías necesarias para algunas extensiones PHP
 RUN apt-get update && apt-get install -y git unzip libpng-dev libonig-dev libxml2-dev
 
