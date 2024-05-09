@@ -1,5 +1,10 @@
 <?php
 
+header('Access-Control-Allow-Origin:*'); 
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Request-With');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
+
+
 use Slim\Factory\AppFactory;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -9,14 +14,6 @@ require __DIR__ . '/src/Config/db.php'; // Incluye la configuración de la base 
 
 $app = AppFactory::create();
 
-// Configuración CORS (si es necesario)
-$app->add(function (Request $request, Response $response, $next) {
-    $response = $next($request, $response);
-    return $response
-        ->withHeader('Access-Control-Allow-Origin', '*')
-        ->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
-        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-});
 
 // Define las rutas de tu aplicación
 $app->get('/', function (Request $request, Response $response, $args) {
