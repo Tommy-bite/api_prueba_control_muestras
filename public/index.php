@@ -1,34 +1,34 @@
 <?php
-header('Access-Control-Allow-Origin:*'); 
-header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Request-With');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
 
 use Slim\Factory\AppFactory;
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
-require __DIR__ . '/vendor/autoload.php';
-require __DIR__ . '/src/Config/db.php';
-
+require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../src/Config/db.php'; // Incluye la configuración de la base de datos si es necesario
 
 $app = AppFactory::create();
 
-$app->setBasePath("/api_control_muestras");   
+// Configuración CORS (si es necesario)
+$app->add(function (Request $request, Response $response, $next) {
+    $response = $next($request, $response);
+    return $response
+        ->withHeader('Access-Control-Allow-Origin', '*')
+        ->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+});
 
-$app->addRoutingMiddleware();
-
-$errorMiddleware = $app->addErrorMiddleware(true, true, true);
-
+// Define las rutas de tu aplicación
 $app->get('/', function (Request $request, Response $response, $args) {
     $response->getBody()->write('Hello world!');
     return $response;
 });
 
-//Routes
-require __DIR__ . '/src/Routes/login.php';
-require __DIR__ . '/src/Routes/home.php';
-require __DIR__ . '/src/Routes/cliente.php';
-require __DIR__ . '/src/Routes/indicadores.php';
+// Incluye las rutas definidas en otros archivos
+require __DIR__ . '/../src/Routes/home.php';
+require __DIR__ . '/../src/Routes/login.php';
+require __DIR__ . '/../src/Routes/cliente.php';
+require __DIR__ . '/../src/Routes/indicadores.php';
 
-// Run app
+// Ejecuta la aplicación
 $app->run();
