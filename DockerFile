@@ -38,3 +38,5 @@ EXPOSE 80
 
 # Configurar Apache para arrancar en modo foreground
 CMD ["apache2-foreground"]
+
+
